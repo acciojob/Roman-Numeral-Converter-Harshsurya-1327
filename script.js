@@ -1,33 +1,39 @@
-function toRoman(num) {
-  if (num === 0) return ""; // No Roman numeral for 0
+function convertToRoman(num) {
+  if (num <= 0 || num > 100000) return "";
 
   const symbols = [
+    ['C̄', 100000],
+    ['X̄', 10000],
     ['M', 1000],
-    ['CM', 900],
     ['D', 500],
-    ['CD', 400],
     ['C', 100],
-    ['XC', 90],
     ['L', 50],
-    ['XL', 40],
     ['X', 10],
-    ['IX', 9],
     ['V', 5],
-    ['IV', 4],
-    ['I', 1],
+    ['I', 1]
   ];
 
-  let result = '';
+  let result = "";
 
-  for (let [symbol, value] of symbols) {
+  for (let [roman, value] of symbols) {
     while (num >= value) {
-      result += symbol;
+      result += roman;
       num -= value;
     }
   }
 
+  // Handle subtractive notation for common numerals
+  result = result.replace('DCCCC', 'CM')
+                 .replace('CCCC', 'CD')
+                 .replace('LXXXX', 'XC')
+                 .replace('XXXX', 'XL')
+                 .replace('VIIII', 'IX')
+                 .replace('IIII', 'IV');
+
   return result;
 }
 
-// Example usage
-console.log(toRoman(798)); // Output: DCCXCVIII
+// Example usage:
+console.log(convertToRoman(14));   // XIV
+console.log(convertToRoman(798));  // DCCXCVIII
+console.log(convertToRoman(100000));// C̄
